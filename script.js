@@ -41,7 +41,7 @@ function addTodo(todo){ //Function that creates elements for the todo and return
     let box1 = document.createElement("div");
     let box2 = document.createElement("div");
     
-    remove.innerHTML = "Remove";
+    remove.innerHTML = "Delete";
     completed.type = "checkbox";
     completed.checked = todo.completed;
     input = todo.todo;
@@ -66,6 +66,12 @@ function addTodo(todo){ //Function that creates elements for the todo and return
         today = " - Skapad " + day + "/" + month + "/" + year;
     }
     
+    remove.addEventListener("click", () => { //EventListener to the delete button.
+        deleteTodo(todo, todos, () => {
+          runTodos(todos);
+        });
+      });
+
     completed.addEventListener("change", (e) =>{ //EventListener to the checkbox.
         todo.completed = e.target.checked;
         runTodos(todos);
@@ -76,3 +82,17 @@ function addTodo(todo){ //Function that creates elements for the todo and return
     li.append(box1, box2);
     return li;
 }
+
+function deleteTodo(todo, todos, after) { //Function for deleting todos.
+    fetch("https://dummyjson.com/todos/" + todo.id, { 
+        method: "DELETE", //This fetch will return the deleted todo with deletedOn.
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.deletedOn) { 
+                let index = todos.findIndex((todo) => todo.id === data.id); // Finds the array index of the todo.
+                todos.splice(index, 1); // Removes 1 element in the array. Index decide which element(position) that should be removed.
+                after();
+            }
+        });
+  }
