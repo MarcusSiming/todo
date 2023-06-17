@@ -1,6 +1,8 @@
 const todoList = document.getElementById("todo-list");
 const completedList = document.getElementById("completed-list");
+const todoForm = document.getElementById("todo-form");
 let todos = []; //Array that will contain the todos
+let idPosition = 6;
 
 start();
 
@@ -68,7 +70,7 @@ function addTodo(todo){ //Function that creates elements for the todo and return
     
     remove.addEventListener("click", () => { //EventListener to the delete button.
         deleteTodo(todo, todos, () => {
-          runTodos(todos);
+            runTodos(todos);
         });
       });
 
@@ -87,12 +89,41 @@ function deleteTodo(todo, todos, after) { //Function for deleting todos.
     fetch("https://dummyjson.com/todos/" + todo.id, { 
         method: "DELETE", //This fetch will return the deleted todo with deletedOn.
     })
-        .then(res => res.json())
-        .then(data => {
-            if (data.deletedOn) { 
-                let index = todos.findIndex((todo) => todo.id === data.id); // Finds the array index of the todo.
-                todos.splice(index, 1); // Removes 1 element in the array. Index decide which element(position) that should be removed.
-                after();
-            }
-        });
-  }
+    .then(res => res.json())
+    .then(data => {
+        if (data.deletedOn) { 
+            let index = todos.findIndex((todo) => todo.id === data.id); // Finds the array index of the todo.
+            todos.splice(index, 1); // Removes 1 element in the array. Index decide which element(position) that should be removed.
+            after();
+        }
+    });
+}
+
+todoForm.addEventListener("submit", (event) => { // Eventlistener to the submit button.
+    event.preventDefault();
+  
+    let input = todoForm.children[0]; // Input will be the value of the input field from the form, which is children[0].
+  
+    newTodo(input.value, todos, () => { 
+        runTodos(todos);
+    });
+    input.value = ""; //Clears the input field each time a new todo has been created.
+})
+
+function newTodo(input, todos, after) { //Fetch add from dummy json.
+    fetch("https://dummyjson.com/todos/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            todo: input, //Todo will be input which is the value from the input field.
+            completed: false, //New todos will be false.
+            userId: 5, //Not used. Can set this to any value.
+      }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        data.id = idPosition++; //The id will get the value of idPosition and then increase with 1 each time a new todo is added. Starts at 6 cause we're only fetching 5 todos.
+        todos.push(data); //Push the new todo into the array.
+        after();
+    });
+}
