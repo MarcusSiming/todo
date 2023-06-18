@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: linear-gradient(135deg, #153677, #1e5b70);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+form{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #dedede;
+    border-radius: 30px;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+form input{
+    width: 400px;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: #d9d9d9;
+    text-align: center;
+}
+
+form button{
+    height: 40px;
+    width: 80px;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    background: #496dfd;
+    color: white;
+}
+
+#lists h1{
+    margin: 30px 0px 10px 0px;
+}
