@@ -50,7 +50,6 @@ function addTodo(todo){ //Function that creates elements for the todo and return
     
     remove.setAttribute("id", "remove");
     completed.setAttribute("id", "check");
-    today.setAttribute("id", "today");
 
     let date = new Date();
     let day = date.getDate();
