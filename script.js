@@ -22,7 +22,7 @@ function runTodos(todos){  //Function that loops through the array and add the t
 
     for(let todo of todos){
         
-        let create = addTodo(todo); //Creates new variable which calls addTodo with todo as parameter.
+        let create = addTodo(todo, ""); //Creates new variable which calls addTodo with todo as parameter.
 
         if (todo.completed){
             completedList.prepend(create); //Adds the returned li to the completedlist.
@@ -35,21 +35,27 @@ function runTodos(todos){  //Function that loops through the array and add the t
 
 function addTodo(todo){ //Function that creates elements for the todo and returns li.
     let li = document.createElement("li");
-    let input = document.createElement("p");
+    let inputText = document.createElement("p");
+    let todoTitle = document.createElement("h3");
     let today = document.createElement("p");
-    let linebreak = document.createElement("br");
     let completed = document.createElement("input");
     let remove = document.createElement("button");
+    let section = document.createElement("section");
     let box1 = document.createElement("div");
     let box2 = document.createElement("div");
+    
     
     remove.innerHTML = "Delete";
     completed.type = "checkbox";
     completed.checked = todo.completed;
-    input = todo.todo;
+    inputText.textContent = todo.todo;
+    todoTitle.textContent = todo.title || "Title";
+    
     
     remove.setAttribute("id", "remove");
     completed.setAttribute("id", "check");
+    box1.setAttribute("id", "box1-div");
+    section.setAttribute("id", "list-section");
 
     let date = new Date();
     let day = date.getDate();
@@ -78,9 +84,11 @@ function addTodo(todo){ //Function that creates elements for the todo and return
         runTodos(todos);
     })
 
-    box1.append(completed, input, linebreak, today);
+    box1.append(completed, inputText);
     box2.append(remove);
-    li.append(box1, box2);
+    section.append(box1, box2);
+
+    li.append(todoTitle, section, today);
     return li;
 }
 
@@ -100,16 +108,18 @@ function deleteTodo(todo, todos, after) { //Function for deleting todos.
 
 todoForm.addEventListener("submit", (event) => { // Eventlistener to the submit button.
     event.preventDefault();
-  
-    let input = todoForm.children[0]; // Input will be the value of the input field from the form, which is children[0].
-  
-    newTodo(input.value, todos, () => { 
+
+    let title = todoForm.children[0].value; 
+    let input = todoForm.children[1].value; // Input will be the value of the input field from the form, which is children[1].
+    
+    newTodo(title, input, todos, () => { 
         runTodos(todos);
     });
-    input.value = ""; //Clears the input field each time a new todo has been created.
+
+    todoForm.reset();
 })
 
-function newTodo(input, todos, after) { //Fetch add from dummy json.
+function newTodo(title, input, todos, after) { //Fetch add from dummy json.
     fetch("https://dummyjson.com/todos/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,11 +127,13 @@ function newTodo(input, todos, after) { //Fetch add from dummy json.
             todo: input, //Todo will be input which is the value from the input field.
             completed: false, //New todos will be false.
             userId: 5, //Not used. Can set this to any value.
+            title: title, //Title will be title which is the value from the title field.
       }),
     })
     .then(res => res.json())
     .then(data => {
         data.id = idPosition++; //The id will get the value of idPosition and then increase with 1 each time a new todo is added. Starts at 6 cause we're only fetching 5 todos.
+        data.title = title; 
         todos.push(data); //Push the new todo into the array.
         after();
     });

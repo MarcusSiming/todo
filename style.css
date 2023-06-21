@@ -2,10 +2,11 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    color: white;
 }
 
 body{
-    background: linear-gradient(135deg, #153677, #1e5b70);
+    background: linear-gradient(135deg, #153677, #3b7386);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -17,53 +18,56 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(255, 255, 255, 0.599);
-    padding: 30px;
-    border-radius: 20px;
+    background: #0000004a;
+    padding: 40px;
+    border: solid 1px white;
+    overflow-y: scroll;
+    height: 800px;
 }
 
 form{
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: #dedede;
-    border-radius: 30px;
-    padding-left: 20px;
+    justify-content: center;
+    flex-direction: column;
     margin-top: 20px;
+    gap: 10px;
 }
 
 form input{
-    width: 500px;
+    width: 400px;
     height: 40px;
     outline: none;
     border: none;
     background: #d9d9d9;
     text-align: center;
     font-size: 16px;
+    border-radius: 30px;
 }
 
 form button{
+    margin-top: 5px;
     height: 40px;
-    width: 80px;
+    width: 200px;
     outline: none;
     border: none;
     border-radius: 30px;
     background: #496dfd;
     color: white;
+    font-size: 17px;
 }
 
-#lists h1{
-    margin: 30px 0px 10px 0px;
+#lists h2{
+    margin: 50px 0px 50px 0px;
+    text-align: center;
 }
 
 #todo-list li, #completed-list li{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
-    line-height: 30px;
-    font-size: 17px;
-    border-bottom: solid 1px black;
+    width: 750px;
+    flex-direction: column;
+    font-size: 16px;
+    border-bottom: solid 1px white;
     margin-bottom: 10px;
 }
 
@@ -88,5 +92,17 @@ form button{
 #check{
     scale: 2;
     margin-right: 10px;
+}
+
+#box1-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#list-section{
+    display: flex;
+    justify-content: space-between;
 }
 
